@@ -1,4 +1,4 @@
-import './App.css'
+import './css/index.css'
 import MovieCard from './components/MovieCard'
 import { Routes, Route } from 'react-router-dom'
 import Home from './pages/Home'

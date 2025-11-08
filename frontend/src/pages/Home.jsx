@@ -1,5 +1,6 @@
 import { useState } from "react";
 import MovieCard from "../components/MovieCard";
+import '../css/Home.css'
 
 export default function Home() {
   const movies = [
@@ -30,7 +31,7 @@ export default function Home() {
           Search
         </button>
       </form>
-      <div className="movie-grid">
+      <div className="movies-grid">
         {movies.map((m) => <MovieCard movie={m} key={m.id} />)}
       </div>
     </div>
