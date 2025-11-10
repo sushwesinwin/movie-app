@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import MovieCard from "../components/MovieCard";
 import "../css/Home.css";
-import { getPopularMovie } from "../services/api";
+import { getPopularMovie, searchMovies } from "../services/api";
 
 export default function Home() {
   const [searchQuery, setSearchQuery] = useState("");
@@ -24,10 +24,22 @@ export default function Home() {
     loadPopularMovies();
   }, []);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    alert(searchQuery);
-    setSearchQuery("");
+    if (!searchQuery.trim()) return;
+    if (loading) return;
+
+    setLoading(true);
+    try {
+      const searchResults = await searchMovies(searchQuery);
+      setMovies(searchResults);
+      setError(null);
+    } catch (error) {
+      console.log(error);
+      setError("Failed to search movies...");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -45,7 +57,7 @@ export default function Home() {
         </button>
       </form>
 
-      {error && <div className="error-message">{error}</div> }
+      {error && <div className="error-message">{error}</div>}
 
       {loading ? (
         <div className="loading">Loading...</div>
@@ -56,7 +68,6 @@ export default function Home() {
           ))}
         </div>
       )}
-
     </div>
   );
 }
