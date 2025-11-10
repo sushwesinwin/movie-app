@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import MovieCard from "../components/MovieCard";
-import '../css/Home.css'
+import "../css/Home.css";
 import { getPopularMovie } from "../services/api";
 
 export default function Home() {
@@ -11,18 +11,18 @@ export default function Home() {
 
   useEffect(() => {
     const loadPopularMovies = async () => {
-        try {
-          const poplularMovies = await getPopularMovie();  
-          setMovies(poplularMovies);
-        } catch (error) {
-          console.log(error);
-          setError('Failed to load popular movies');
-        } finally {
-          setLoading(false);
-        }
-    }
+      try {
+        const poplularMovies = await getPopularMovie();
+        setMovies(poplularMovies);
+      } catch (error) {
+        console.log(error);
+        setError("Failed to load popular movies");
+      } finally {
+        setLoading(false);
+      }
+    };
     loadPopularMovies();
-  }, [])
+  }, []);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -44,9 +44,19 @@ export default function Home() {
           Search
         </button>
       </form>
-      <div className="movies-grid">
-        {movies.map((m) => <MovieCard movie={m} key={m.id} />)}
-      </div>
+
+      {error && <div className="error-message">{error}</div> }
+
+      {loading ? (
+        <div className="loading">Loading...</div>
+      ) : (
+        <div className="movies-grid">
+          {movies.map((m) => (
+            <MovieCard movie={m} key={m.id} />
+          ))}
+        </div>
+      )}
+
     </div>
   );
 }
